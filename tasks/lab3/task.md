@@ -236,7 +236,7 @@ response.text
 ```python
 def update(self, request, *args, **kwargs):
     # Для удобства в kwargs передаётся id строки для изменения в БД, под параметром pk
-    cart_item = get_object_or_404(Cart, id=kwargs['pk'])
+    cart_item = get_object_or_404(CartItem, id=kwargs['pk'])
     if request.data.get('quantity'):
         cart_item.quantity = request.data['quantity']
     if request.data.get('product'):
