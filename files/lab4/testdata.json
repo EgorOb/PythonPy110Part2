@@ -1,0 +1,79 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "testuser",
+      "password": "testpassword"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Овощи",
+      "slug_name": "vegetables",
+      "parent": null,
+      "created_at": "2023-01-06T12:00:00Z",
+      "updated_at": "2023-01-06T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.unit",
+    "pk": 1,
+    "fields": {
+      "name": "кг",
+      "description": "Килограмм",
+      "conversion_factor": 1.0,
+      "created_at": "2023-01-06T12:00:00Z",
+      "updated_at": "2023-01-06T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.currency",
+    "pk": 1,
+    "fields": {
+      "name": "руб",
+      "description": "Рубль",
+      "currency_sign": "₽",
+      "created_at": "2023-01-06T12:00:00Z",
+      "updated_at": "2023-01-06T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "name": "Болгарский перец",
+      "slug_name": "bell_pepper",
+      "description": "Сочный и яркий, он добавит красок и вкуса в ваши блюда.",
+      "unit": 1,
+      "quantity_per_unit": 1.0,
+      "price": "300.00",
+      "currency": 1,
+      "category": 1,
+      "created_at": "2023-01-06T12:00:00Z",
+      "updated_at": "2023-01-06T12:00:00Z"
+    }
+  },
+  {
+    "model": "cart.cart",
+    "pk": 1,
+    "fields": {
+      "customer": 1,
+      "created_at": "2023-01-06T12:00:00Z",
+      "updated_at": "2023-01-06T12:00:00Z"
+    }
+  },
+  {
+    "model": "cart.cartitem",
+    "pk": 1,
+    "fields": {
+      "cart": 1,
+      "product": 1,
+      "quantity": 1,
+      "created_at": "2023-01-06T12:00:00Z",
+      "updated_at": "2023-01-06T12:00:00Z"
+    }
+  }
+]
