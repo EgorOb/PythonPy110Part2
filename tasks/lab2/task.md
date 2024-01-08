@@ -73,6 +73,58 @@ INSTALLED_APPS = [
 `delivery`, `stock`, `promotion` по `cart_models.py`, `order_models.py`, 
 `delivery_models.py`, `stock_models.py`, `promotion_models.py`
 
+Настройте медиафайлы в `settings.py` (это нужно для хранения пользовательский 
+статических файлов)
+
+```python
+# settings.py
+
+# После блока с STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+```
+
+![img_17.png](pic_for_task/img_17.png)
+
+Чем `MEDIA_ROOT` отличается от `STATIC_ROOT`?
+
+`MEDIA_ROOT` и `STATIC_ROOT` в Django предназначены для хранения разных типов файлов и имеют разные цели:
+
+* `STATIC_ROOT`: Используется для хранения статических файлов, таких как CSS, JavaScript, изображения, используемые вашим веб-приложением.
+Когда вы выполняете команду collectstatic, Django копирует все статические файлы из различных мест в STATIC_ROOT, чтобы они могли быть обслужены вашим веб-сервером в режиме production.
+Обычно используется для файлов, которые остаются неизменными в течение времени выполнения приложения.
+
+
+* `MEDIA_ROOT`: Используется для хранения медиафайлов, таких как загруженные изображения, видео или другие пользовательские файлы.
+Медиафайлы могут быть изменены или добавлены в процессе работы вашего веб-приложения, например, при загрузке пользователем изображений.
+Django не управляет этими файлами так, как статическими файлами; вместо этого он предоставляет URL-адреса для обработки этих файлов, а вам нужно настроить веб-сервер для их обслуживания.
+
+Далее необходимо для режима DEBUG=True указать где лежат эти медиа файлы,
+так как в Django отличаются подходы к статическим(медиа) файлам в режиме дебага и без.
+
+* Статические файлы в режиме дебага часто обслуживаются Django, в то время как в production они обслуживаются веб-сервером (Nginx, Apache, ...) после сбора командой collectstatic.
+
+
+* Медиафайлы также могут обслуживаться Django в режиме дебага, но в production это обычно задача веб-сервера (Nginx, Apache, ...) или хранилища.
+
+Поэтому, чтобы в режиме дебага была возможность обрабатывать медиа файлы (картинки, видео и т.д.), 
+в корневом `urls.py` пропишем
+
+```python
+from django.conf import settings
+from django.conf.urls.static import static
+
+# if settings.DEBUG: прописывать после urlpatterns = [...]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+`if settings.DEBUG:` означает, что данный код выполнится только в режиме дебага, 
+а именно произойдет расширение маршрутов
+
+![img_18.png](pic_for_task/img_18.png)
 
 ### Создание дополнительного вспомогательного функционала при помощи обработки сигналов
 
@@ -734,7 +786,7 @@ MIDDLEWARE = [
 ```
 ![img_14.png](pic_for_task/img_14.png)
 
-В конце settings.py добавьте
+В конце `settings.py` добавьте
 
 ```python
 INTERNAL_IPS = [
@@ -743,19 +795,14 @@ INTERNAL_IPS = [
 ```
 
 
-В корневой `urls.py` необходимо добавить
+В корневой `urls.py` в `if settings.DEBUG:` необходимо добавить
 
 ```python
-from project.settings import DEBUG
-
-if DEBUG:
-    urlpatterns += [
-        path("__debug__/", include("debug_toolbar.urls")),
-    ]
+# После urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [
+    path("__debug__/", include("debug_toolbar.urls")),
+]
 ```
-
-`If DEBUG:` означает, что данный код выполнится только в режиме дебага, 
-а именно произойдет расширение маршрутов
 
 ![img_15.png](pic_for_task/img_15.png)
 
